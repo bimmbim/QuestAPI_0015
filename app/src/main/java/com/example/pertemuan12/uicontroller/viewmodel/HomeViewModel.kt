@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pertemuan12.modeldata.DataSiswa
-import com.example.pertemuan12.modeldata.ResponsApi
 import com.example.pertemuan12.repositori.RepositoryDataSiswa
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -14,7 +13,7 @@ import java.io.IOException
 
 sealed interface StatusUiSiswa {
     data class Success(val siswa: List<DataSiswa> = listOf()) : StatusUiSiswa
-    data class Error(val message: String) : StatusUiSiswa
+    object Error : StatusUiSiswa
     object Loading : StatusUiSiswa
 }
 
@@ -32,11 +31,11 @@ class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : View
             listSiswa = try {
                 StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
             } catch (e: IOException) {
-                StatusUiSiswa.Error("Tidak dapat terhubung ke server. Periksa Laragon dan URL server.")
+                StatusUiSiswa.Error
             } catch (e: HttpException) {
-                StatusUiSiswa.Error("Server mengembalikan HTTP ${e.code()}.")
+                StatusUiSiswa.Error
             } catch (e: Exception) {
-                StatusUiSiswa.Error(e.message ?: "Terjadi kesalahan saat memuat data.")
+                StatusUiSiswa.Error
             }
         }
     }

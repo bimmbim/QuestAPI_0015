@@ -1,7 +1,6 @@
 package com.example.pertemuan12.apiservice
 
 import com.example.pertemuan12.modeldata.DataSiswa
-import com.example.pertemuan12.modeldata.ResponsApi
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,5 +11,5 @@ interface ServiceApiSiswa {
     suspend fun getSiswa(): List<DataSiswa>
 
     @POST("insertTM.php")
-    suspend fun postSiswa(@Body dataSiswa: DataSiswa): Response<ResponsApi>
+    suspend fun postSiswa(@Body dataSiswa: DataSiswa): Response<Void>
 }

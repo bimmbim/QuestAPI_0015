@@ -92,26 +92,9 @@ fun HomeBody(
     ) {
         when (statusUiSiswa) {
             is StatusUiSiswa.Loading -> LoadingScreen()
-            is StatusUiSiswa.Success -> {
-                if (statusUiSiswa.siswa.isEmpty()) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = modifier.fillMaxSize()
-                    ) {
-                        Text(
-                            text = stringResource(R.string.deskripsi_no_item),
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
-                } else {
-                    DaftarSiswa(itemsSiswa = statusUiSiswa.siswa)
-                }
-            }
+            is StatusUiSiswa.Success -> DaftarSiswa(itemsSiswa = statusUiSiswa.siswa)
             is StatusUiSiswa.Error -> ErrorScreen(
-                message = statusUiSiswa.message,
-                retryAction = retryAction,
+                retryAction,
                 modifier = modifier.fillMaxSize()
             )
         }
@@ -128,18 +111,13 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorScreen(
-    message: String,
-    retryAction: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = stringResource(R.string.gagal), modifier = Modifier.padding(16.dp))
-        Text(text = message, modifier = Modifier.padding(horizontal = 16.dp))
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
         }

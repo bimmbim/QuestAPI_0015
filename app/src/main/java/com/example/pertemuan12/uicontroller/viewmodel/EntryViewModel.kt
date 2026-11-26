@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.pertemuan12.modeldata.DataSiswa
-import com.example.pertemuan12.modeldata.ResponsApi
 import com.example.pertemuan12.repositori.RepositoryDataSiswa
 import retrofit2.Response
 
@@ -26,16 +25,19 @@ class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
     }
 
     /* Fungsi untuk menyimpan data yang di-entry */
-    suspend fun addSiswa(): Boolean {
+    suspend fun addSiswa() {
         if (validasiInput()) {
-            return try {
-                val sip: Response<ResponsApi> = repositoryDataSiswa.postDataSiswa(uiStateSiswa.detailsSiswa.toDataSiswa())
-                sip.isSuccessful && sip.body()?.message != null
+            try {
+                val sip: Response<Void> = repositoryDataSiswa.postDataSiswa(uiStateSiswa.detailsSiswa.toDataSiswa())
+                if (sip.isSuccessful) {
+                    println("Sukses Tambah Data : ${sip.message()}")
+                } else {
+                    println("Gagal tambah data : ${sip.errorBody()}")
+                }
             } catch (e: Exception) {
-                false
+                e.printStackTrace()
             }
         }
-        return false
     }
 }
 
