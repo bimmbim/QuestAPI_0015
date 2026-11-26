@@ -2,11 +2,12 @@ package com.example.pertemuan12.repositori
 
 import com.example.pertemuan12.apiservice.ServiceApiSiswa
 import com.example.pertemuan12.modeldata.DataSiswa
+import com.example.pertemuan12.modeldata.ResponsApi
 import retrofit2.Response
 
 interface RepositoryDataSiswa {
     suspend fun getDataSiswa() : List<DataSiswa>
-    suspend fun postDataSiswa(dataSiswa: DataSiswa) : Response<Void>
+    suspend fun postDataSiswa(dataSiswa: DataSiswa) : Response<ResponsApi>
 }
 
 class JaringanRepositoryDataSiswa(
@@ -15,6 +16,6 @@ class JaringanRepositoryDataSiswa(
     override suspend fun getDataSiswa() : List<DataSiswa> =
         serviceApiSiswa.getSiswa()
 
-    override suspend fun postDataSiswa(dataSiswa: DataSiswa): Response<Void> =
+    override suspend fun postDataSiswa(dataSiswa: DataSiswa): Response<ResponsApi> =
         serviceApiSiswa.postSiswa(dataSiswa)
 }

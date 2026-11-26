@@ -92,7 +92,23 @@ fun HomeBody(
     ) {
         when (statusUiSiswa) {
             is StatusUiSiswa.Loading -> LoadingScreen()
-            is StatusUiSiswa.Success -> DaftarSiswa(itemsSiswa = statusUiSiswa.siswa)
+            is StatusUiSiswa.Success -> {
+                if (statusUiSiswa.siswa.isEmpty()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.deskripsi_no_item),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                } else {
+                    DaftarSiswa(itemsSiswa = statusUiSiswa.siswa)
+                }
+            }
             is StatusUiSiswa.Error -> ErrorScreen(
                 retryAction,
                 modifier = modifier.fillMaxSize()
