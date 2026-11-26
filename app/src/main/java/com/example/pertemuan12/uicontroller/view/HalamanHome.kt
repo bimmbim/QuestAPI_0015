@@ -110,7 +110,8 @@ fun HomeBody(
                 }
             }
             is StatusUiSiswa.Error -> ErrorScreen(
-                retryAction,
+                message = statusUiSiswa.message,
+                retryAction = retryAction,
                 modifier = modifier.fillMaxSize()
             )
         }
@@ -127,13 +128,18 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+fun ErrorScreen(
+    message: String,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = stringResource(R.string.gagal), modifier = Modifier.padding(16.dp))
+        Text(text = message, modifier = Modifier.padding(horizontal = 16.dp))
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
         }

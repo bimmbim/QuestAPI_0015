@@ -14,7 +14,7 @@ import java.io.IOException
 
 sealed interface StatusUiSiswa {
     data class Success(val siswa: List<DataSiswa> = listOf()) : StatusUiSiswa
-    object Error : StatusUiSiswa
+    data class Error(val message: String) : StatusUiSiswa
     object Loading : StatusUiSiswa
 }
 
@@ -32,11 +32,11 @@ class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : View
             listSiswa = try {
                 StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
             } catch (e: IOException) {
-                StatusUiSiswa.Error
+                StatusUiSiswa.Error("Tidak dapat terhubung ke server. Periksa Laragon dan URL server.")
             } catch (e: HttpException) {
-                StatusUiSiswa.Error
+                StatusUiSiswa.Error("Server mengembalikan HTTP ${e.code()}.")
             } catch (e: Exception) {
-                StatusUiSiswa.Error
+                StatusUiSiswa.Error(e.message ?: "Terjadi kesalahan saat memuat data.")
             }
         }
     }
